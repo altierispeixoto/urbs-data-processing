@@ -27,7 +27,7 @@ class Neo4JDataProcess:
         self.save(lines, "/data/neo4j/lines")
 
         trips = self.trips()
-        self.save(trips, "data/neo4j/trips")
+        self.save(trips, "/data/neo4j/trips")
 
         bus_stop_type = self.bus_stop_type()
         self.save(bus_stop_type, "/data/neo4j/bus_stop_type")

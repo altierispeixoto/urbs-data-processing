@@ -99,3 +99,14 @@ docker-compose exec jupyterlab  python dataprocessing/job/refined_ingestion.py -
 docker-compose exec jupyterlab  python dataprocessing/job/neo4j_ingestion.py -ds "2019-05-03"  -de "2019-05-07"
  
 ```
+
+
+### Load data into Neo4J
+
+```
+
+docker-compose exec jupyterlab  python dataprocessing/job/neo4j_loader.py -ds "2019-05-03"  -de "2019-05-07"
+
+
+```
+

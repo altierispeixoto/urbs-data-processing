@@ -9,7 +9,7 @@ docker-compose build
 ### Download URBS Data
 ```
 
-### download files trom UFPR portal
+### download files from UFPR portal
 
 docker-compose exec jupyterlab python dataprocessing/job/download_files.py -s "2019-05-01" -e "2019-05-07" -fd folder -fl file
 

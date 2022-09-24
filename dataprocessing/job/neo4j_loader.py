@@ -8,7 +8,7 @@ config = yaml.load(open('/opt/urbs-data-processing/dataprocessing/job/cypher/dat
 
 NEO4J_URI = 'bolt://172.17.0.3:7687'
 NEO4J_USER = "neo4j"
-NEO4J_PASSWORD = "h4ck3r"
+NEO4J_PASSWORD = "jfzrpg93"
 
 parser = ArgumentParser()
 parser.add_argument("-ds", "--start_date", dest="start_date", help="start_date", metavar="DATE_START")

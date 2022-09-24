@@ -11,7 +11,7 @@ class ETLSpark:
         self.conf = (self.conf.setMaster('local[*]')
                      .set('spark.executor.memory', '12G')
                      .set('spark.driver.memory', '12G')
-                     .set('spark.driver.maxResultSize', '5G')
+                     .set('spark.driver.maxResultSize', '12G')
                      .set('spark.sql.autoBroadcastJoinThreshold', '-1')
                      .set("spark.sql.sources.partitionOverwriteMode", "dynamic")
                      )

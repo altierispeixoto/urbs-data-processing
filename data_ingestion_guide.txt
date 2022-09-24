@@ -1,0 +1,29 @@
+# DOWNLOAD
+docker-compose exec jupyterlab python dataprocessing/job/download_files.py -s "2022-07-01" -e "2022-07-25" -fd linhas -fl linhas.json.xz
+docker-compose exec jupyterlab python dataprocessing/job/download_files.py -s "2022-07-01" -e "2022-07-25" -fd pontoslinha -fl pontosLinha.json.xz
+docker-compose exec jupyterlab python dataprocessing/job/download_files.py -s "2022-07-01" -e "2022-07-25" -fd tabelalinha -fl tabelaLinha.json.xz
+docker-compose exec jupyterlab python dataprocessing/job/download_files.py -s "2022-07-01" -e "2022-07-25" -fd trechositinerarios -fl trechosItinerarios.json.xz
+docker-compose exec jupyterlab python dataprocessing/job/download_files.py -s "2022-07-01" -e "2022-07-25" -fd tabelaveiculo -fl tabelaVeiculo.json.xz
+docker-compose exec jupyterlab python dataprocessing/job/download_files.py -s "2022-07-01" -e "2022-07-25" -fd veiculos -fl veiculos.json.xz
+
+# DECOMPRESS
+docker-compose exec jupyterlab python dataprocessing/job/decompress_files.py -s "2022-07-01" -e "2022-07-25" -fd linhas -fl linhas.json.xz
+docker-compose exec jupyterlab python dataprocessing/job/decompress_files.py -s "2022-07-01" -e "2022-07-25" -fd pontoslinha -fl pontosLinha.json.xz
+docker-compose exec jupyterlab python dataprocessing/job/decompress_files.py -s "2022-07-01" -e "2022-07-25" -fd tabelalinha -fl tabelaLinha.json.xz
+docker-compose exec jupyterlab python dataprocessing/job/decompress_files.py -s "2022-07-01" -e "2022-07-25" -fd trechositinerarios -fl trechosItinerarios.json.xz
+docker-compose exec jupyterlab python dataprocessing/job/decompress_files.py -s "2022-07-01" -e "2022-07-25" -fd tabelaveiculo -fl tabelaVeiculo.json.xz
+docker-compose exec jupyterlab python dataprocessing/job/decompress_files.py -s "2022-07-01" -e "2022-07-25" -fd veiculos -fl veiculos.json.xz
+
+# TRUSTED
+docker-compose exec jupyterlab  python dataprocessing/job/trust_ingestion.py -d "2022-07"
+
+# REFINED
+docker-compose exec jupyterlab  python dataprocessing/job/refined_ingestion.py -ds "2022-07-01" -de "2022-07-25" -j line
+docker-compose exec jupyterlab  python dataprocessing/job/refined_ingestion.py -ds "2022-07-01" -de "2022-07-25" -j timetable
+docker-compose exec jupyterlab  python dataprocessing/job/refined_ingestion.py -ds "2022-07-01" -de "2022-07-25" -j bus-stop
+docker-compose exec jupyterlab  python dataprocessing/job/refined_ingestion.py -ds "2022-07-01" -de "2022-07-25" -j tracking
+
+# NEO4J
+
+docker-compose exec jupyterlab  python dataprocessing/job/neo4j_ingestion.py -ds "2022-07-01" -de "2022-07-25"
+docker-compose exec jupyterlab  python dataprocessing/job/neo4j_loader.py -ds "2022-07-01" -de "2022-07-25"

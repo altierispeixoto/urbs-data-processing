@@ -30,8 +30,8 @@ class TrustProcessing:
                 .select(F.col("COD_LINHA").alias("line_code"),
                         F.date_format(F.unix_timestamp('dthr', 'dd/MM/yyyy HH:mm:ss').cast('timestamp'),
                                       "yyyy-MM-dd HH:mm:ss").alias('event_timestamp'),
-                        F.col("LAT").cast('double').alias("latitude"),
-                        F.col("LON").cast('double').alias("longitude"),
+                        F.regexp_replace("LAT", ",", ".").cast('double').alias("latitude"),
+                        F.regexp_replace("LON", ",", ".").cast('double').alias("longitude"),
                         F.col("VEIC").alias("vehicle")
                         )
                 .withColumn("year", F.year("event_timestamp"))
@@ -52,8 +52,8 @@ class TrustProcessing:
     def bustops_ingestion(self, period: str) -> DataFrame:
         return (self.etlspark.extract(f"/data/raw/{period}/pontoslinha")
                 .withColumn("line_code", F.col("cod"))
-                .withColumn("latitude", F.col("lat"))
-                .withColumn("longitude", F.col("lon"))
+                .withColumn("latitude", F.regexp_replace("lat", ",", "."))
+                .withColumn("longitude", F.regexp_replace("lon", ",", "."))
                 .withColumn("name", F.col("nome"))
                 .withColumn("number", F.col("num"))
                 .withColumn("line_way", F.col("sentido"))

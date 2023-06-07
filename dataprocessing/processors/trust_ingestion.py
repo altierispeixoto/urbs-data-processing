@@ -19,6 +19,9 @@ class TrustProcessing:
         timetable = self.timetable_ingestion(self.date)
         self.save(timetable, "/data/trusted/timetable")
 
+        linetimetable = self.linetimetable_ingestion(self.date)
+        self.save(linetimetable, "/data/trusted/linetimetable")
+
         busstops = self.bustops_ingestion(self.date)
         self.save(busstops, "/data/trusted/busstops")
 
@@ -72,6 +75,16 @@ class TrustProcessing:
                 .withColumn("vehicle", F.col("veiculo"))
                 .drop("cod_linha", "cod_ponto", "horario", "nome_linha", "tabela", "veiculo")
                 .dropDuplicates())
+
+    def linetimetable_ingestion(self, period: str) -> DataFrame:
+        return (self.etlspark.extract(f"/data/raw/{period}/tabelalinha")
+                .withColumn("line_code", F.col("cod"))
+                .withColumn("day_code", F.col("dia"))
+                .withColumn("busstop_number", F.col("num"))
+                .withColumn("time", F.col("hora"))
+                .withColumn("timetable", F.col("tabela"))
+                .drop("hora", "ponto", "dia", "num", "tabela", "adapt", "cod")
+                .dropDuplicates())                
 
     def save(self, df: DataFrame, output: str):
         (df.coalesce(1).write.mode('overwrite')

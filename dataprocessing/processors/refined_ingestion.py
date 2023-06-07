@@ -140,8 +140,12 @@ class TimetableRefinedProcess:
     def trips(self) -> DataFrame:
         bs = BusStopRefinedProcess(self.year, self.month, self.day)
         trip_endpoints = bs.trip_endpoints().drop("year", "month", "day")
+        
+        # debug
+        timetable = self.timetable()
+        self.save(timetable, "/data/refined/timetable")
 
-        return (self.timetable()
+        return (timetable
                 .join(trip_endpoints, ['line_code', 'start_point', 'end_point'], how='left')
                 .filter('line_way is not null'))
 
@@ -259,7 +263,9 @@ class TrackingDataRefinedProcess:
         scheduled_vehicles = TimetableRefinedProcess(year, month, day).trips().select("line_code", "vehicle").distinct()
         tracking_vehicles = tracking_data.select("line_code", "vehicle").distinct()
         tracking_scheduled_vehicles = tracking_vehicles.join(scheduled_vehicles, ["line_code", "vehicle"], 'inner')
-
+        
+        # debug
+        self.save(tracking_data, "/data/refined/tracking_data")
         return tracking_data.join(tracking_scheduled_vehicles, ["line_code", "vehicle"], 'inner')
 
     def perform(self):
@@ -272,6 +278,11 @@ class TrackingDataRefinedProcess:
 
         events = self.process_events(stop_events, bus_event_edges)
         self.save(events, "/data/refined/events")
+        
+        #debug
+        self.save(vehicles, "/data/refined/vehicles")
+        self.save(stop_events, "/data/refined/stop_events")
+        self.save(self.df, "/data/refined/df")
 
     def __call__(self, *args, **kwargs):
         self.perform()

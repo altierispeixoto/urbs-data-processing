@@ -1,5 +1,6 @@
 *
 !*.gitignore
-!shape_files/*
+!shape_files/
+!shape_files/**
 !datalake/
 !database/

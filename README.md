@@ -14,7 +14,9 @@ bash process-data.sh
 
 3. Setup neo4j database
 
+```
 Copy the content of dataprocessing/job/cypher/setup.cypher and run into neo4j console.
+```
 
 4. Ingest data into neo4j
 

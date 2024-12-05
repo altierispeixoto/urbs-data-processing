@@ -1,0 +1,5 @@
+*
+!*.gitignore
+!shape_files/
+!datalake/
+!database/

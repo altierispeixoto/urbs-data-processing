@@ -1,4 +1,3 @@
-# https://github.com/blockchain-etl/bitcoin-etl-airflow-neo4j/blob/master/dags/dag_btc_to_neo4j.py
 from neo4j import GraphDatabase
 from datetime import timedelta, datetime
 import yaml
@@ -6,7 +5,7 @@ from argparse import ArgumentParser
 
 config = yaml.load(open('/opt/urbs-data-processing/dataprocessing/job/cypher/database.yml'), Loader=yaml.FullLoader)
 
-NEO4J_URI = 'bolt://172.17.0.3:7687'
+NEO4J_URI = 'bolt://172.17.0.2:7687'
 NEO4J_USER = "neo4j"
 NEO4J_PASSWORD = "h4ck3r"
 

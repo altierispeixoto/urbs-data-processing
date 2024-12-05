@@ -1,0 +1,15 @@
+[project]
+name = "urbs-data-processing"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "geomet>=1.1.0",
+    "geopandas>=1.0.1",
+    "h3==3.7.1",
+    "pyarrow>=18.1.0",
+]
+
+[dependency-groups]
+dev = ["ipykernel>=6.29.5"]

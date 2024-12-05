@@ -74,18 +74,18 @@ docker-compose exec jupyterlab  python dataprocessing/job/trust_ingestion.py -d 
 
 ### Execute refined processing for creating several enriched datasources.
 
-docker-compose exec jupyterlab  python dataprocessing/job/refined_ingestion.py -ds "2019-05-03" -de "2019-05-03" -j line
+docker-compose exec jupyterlab  python dataprocessing/job/refined_ingestion.py -ds "2019-05-01" -de "2019-05-07" -j line
 
 -j [line,timetable,bus-stop, tracking ]
 
 
-docker-compose exec jupyterlab  python dataprocessing/job/refined_ingestion.py -ds "2019-05-03" -de "2019-05-03" -j line
+docker-compose exec jupyterlab  python dataprocessing/job/refined_ingestion.py -ds "2019-05-01" -de "2019-05-07" -j line
 
-docker-compose exec jupyterlab  python dataprocessing/job/refined_ingestion.py -ds "2019-05-03" -de "2019-05-03" -j timetable
+docker-compose exec jupyterlab  python dataprocessing/job/refined_ingestion.py -ds "2019-05-01" -de "2019-05-07" -j timetable
 
-docker-compose exec jupyterlab  python dataprocessing/job/refined_ingestion.py -ds "2019-05-03" -de "2019-05-03" -j bus-stop
+docker-compose exec jupyterlab  python dataprocessing/job/refined_ingestion.py -ds "2019-05-01" -de "2019-05-07" -j bus-stop
 
-docker-compose exec jupyterlab  python dataprocessing/job/refined_ingestion.py -ds "2019-05-03" -de "2019-05-03" -j tracking
+docker-compose exec jupyterlab  python dataprocessing/job/refined_ingestion.py -ds "2019-05-01" -de "2019-05-07" -j tracking
 
 ```
 
@@ -96,7 +96,7 @@ docker-compose exec jupyterlab  python dataprocessing/job/refined_ingestion.py -
 ### Prepare data to be inserted on neo4j database.
 
 
-docker-compose exec jupyterlab  python dataprocessing/job/neo4j_ingestion.py -ds "2019-05-03"  -de "2019-05-07"
+docker-compose exec jupyterlab  python dataprocessing/job/neo4j_ingestion.py -ds "2019-05-01"  -de "2019-05-07"
  
 ```
 
@@ -104,9 +104,6 @@ docker-compose exec jupyterlab  python dataprocessing/job/neo4j_ingestion.py -ds
 ### Load data into Neo4J
 
 ```
-
 docker-compose exec jupyterlab  python dataprocessing/job/neo4j_loader.py -ds "2019-05-03"  -de "2019-05-07"
 
-
 ```
-

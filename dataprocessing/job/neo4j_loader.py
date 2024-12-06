@@ -2,12 +2,16 @@ from neo4j import GraphDatabase
 from datetime import timedelta, datetime
 import yaml
 from argparse import ArgumentParser
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
 
 config = yaml.load(open('/opt/urbs-data-processing/dataprocessing/job/cypher/database.yml'), Loader=yaml.FullLoader)
 
-NEO4J_URI = 'bolt://172.17.0.2:7687'
-NEO4J_USER = "neo4j"
-NEO4J_PASSWORD = "h4ck3r"
+NEO4J_URI = os.getenv('NEO4J_URI')
+NEO4J_USER = os.getenv('NEO4J_USER')
+NEO4J_PASSWORD = os.getenv('NEO4J_PASSWORD')
 
 parser = ArgumentParser()
 parser.add_argument("-ds", "--start_date", dest="start_date", help="start_date", metavar="DATE_START")

@@ -9,6 +9,7 @@ dependencies = [
     "geopandas>=1.0.1",
     "h3==3.7.1",
     "pyarrow>=18.1.0",
+    "python-dotenv>=1.0.1",
 ]
 
 [dependency-groups]

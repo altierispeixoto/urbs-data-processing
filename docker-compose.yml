@@ -1,8 +1,8 @@
 services:
   jupyterlab:
     network_mode: bridge
-    container_name: urbs-jupyterlab
-    restart: always
+    container_name: jupyterlab
+    restart: unless-stopped
     user: root
     build: .
     image: utfpr/jupyterlab:latest
@@ -17,8 +17,9 @@ services:
 
   neo4j:
     network_mode: bridge
-    image: neo4j:3.5.6
-    restart: always
+    image: neo4j:5.25-community
+    container_name: neo4j
+    restart: unless-stopped
     ports:
       - 7474:7474
       - 7687:7687
@@ -29,8 +30,13 @@ services:
       - ./data/database/neo4j/plugins:/plugins
       - ./data/database/neo4j/import:/import
     environment:
-      NEO4J_dbms_security_procedures_unrestricted: algo.*, apoc.*
-      NEO4J_apoc_import_file_enabled: "true"
-      NEO4J_dbms_memory_pagecache_size: "8G"
-      NEO4J_dbms_memory_heap_initial__size: "8G"
-      NEO4J_dbms_memory_heap_max__size: "8G"
+      - NEO4J_AUTH=${NEO4J_USER}/${NEO4J_PASSWORD}
+      - NEO4J_apoc_export_file_enabled=true
+      - NEO4J_apoc_import_file_enabled=true
+      - NEO4J_apoc_import_file_use__neo4j__config=true
+      - NEO4J_dbms_security_procedures_unrestricted=apoc.*,gds.*
+      - NEO4JLABS_PLUGINS=["apoc", "graph-data-science"]
+      - NEO4J_dbms_memory_pagecache_size=8G
+      - NEO4J_dbms_memory_heap_initial__size=8G
+      - NEO4J_dbms_memory_heap_max__size=8G
+    

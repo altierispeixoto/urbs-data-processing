@@ -1,13 +1,21 @@
 MATCH (n) DETACH DELETE n;
 MATCH ()-[r]-() DELETE r;
 
-create constraint on (y:Year) ASSERT y.value IS UNIQUE;
-CREATE INDEX ON :Month(value);
-CREATE INDEX ON :Day(value);
-CREATE INDEX ON :Hour(value);
-CREATE INDEX ON :Trip(line_way);
-CREATE INDEX ON :Line(line_code);
-CREATE INDEX ON :Event(vehicle, event_timestamp);
+// create constraint on (y:Year) ASSERT y.value IS UNIQUE;
+// CREATE INDEX ON :Month(value);
+// CREATE INDEX ON :Day(value);
+// CREATE INDEX ON :Hour(value);
+// CREATE INDEX ON :Trip(line_way);
+// CREATE INDEX ON :Line(line_code);
+// CREATE INDEX ON :Event(vehicle, event_timestamp);
+
+CREATE CONSTRAINT unique_year_value IF NOT EXISTS FOR (y:Year) REQUIRE y.value IS UNIQUE;
+CREATE INDEX month_value_index IF NOT EXISTS FOR (m:Month) ON (m.value);
+CREATE INDEX day_value_index IF NOT EXISTS FOR (d:Day) ON (d.value);
+CREATE INDEX hour_value_index IF NOT EXISTS FOR (h:Hour) ON (h.value);
+CREATE INDEX trip_line_way_index IF NOT EXISTS FOR (t:Trip) ON (t.line_way);
+CREATE INDEX line_code_index IF NOT EXISTS FOR (l:Line) ON (l.line_code);
+CREATE INDEX event_vehicle_timestamp_index IF NOT EXISTS FOR (e:Event) ON (e.vehicle, e.event_timestamp);
 
 
 //Create Time Tree with Day Depth
@@ -44,21 +52,20 @@ MATCH (year:Year)
 WITH year
 ORDER BY year.value
 WITH collect(year) AS years
-  FOREACH(i in RANGE(0, length(years)-2) |
-    FOREACH(year1 in [years[i]] |
-      FOREACH(year2 in [years[i+1]] |
-        CREATE UNIQUE (year1)-[:NEXT]->(year2))));
+UNWIND range(0, size(years) - 2) AS i
+WITH years[i] AS year1, years[i + 1] AS year2
+MERGE (year1)-[:NEXT]->(year2);
+
 
 
 //Connect Months Sequentially
 MATCH (year:Year)-[:CONTAINS]->(month)
 WITH year, month
 ORDER BY year.value, month.value
-  WITH collect(month) AS months
-    FOREACH(i in RANGE(0, length(months)-2) |
-      FOREACH(month1 in [months[i]] |
-        FOREACH(month2 in [months[i+1]] |
-          CREATE UNIQUE (month1)-[:NEXT]->(month2))));
+WITH collect(month) AS months
+UNWIND range(0, size(months) - 2) AS i
+WITH months[i] AS month1, months[i + 1] AS month2
+MERGE (month1)-[:NEXT]->(month2);
 
 
 //Connect Days Sequentially
@@ -66,10 +73,9 @@ MATCH (year:Year)-[:CONTAINS]->(month)-[:CONTAINS]->(day)
 WITH year, month, day
 ORDER BY year.value, month.value, day.value
 WITH collect(day) AS days
-FOREACH(i in RANGE(0, length(days)-2) |
-    FOREACH(day1 in [days[i]] |
-        FOREACH(day2 in [days[i+1]] |
-            CREATE UNIQUE (day1)-[:NEXT]->(day2))));
+UNWIND range(0, size(days) - 2) AS i
+WITH days[i] AS day1, days[i + 1] AS day2
+MERGE (day1)-[:NEXT]->(day2);
 
 
 // Connect Hours Sequentially
@@ -77,7 +83,6 @@ MATCH (year:Year)-[:CONTAINS]->(month)-[:CONTAINS]->(day)-[:CONTAINS]->(hour)
 WITH year, month, day, hour
 ORDER BY year.value, month.value, day.value, hour.value
 WITH collect(hour) AS hours
-FOREACH(i in RANGE(0, length(hours)-2) |
-    FOREACH(hour1 in [hours[i]] |
-        FOREACH(hour2 in [hours[i+1]] |
-            CREATE UNIQUE (hour1)-[:NEXT]->(hour2))));
+UNWIND range(0, size(hours) - 2) AS i
+WITH hours[i] AS hour1, hours[i + 1] AS hour2
+MERGE (hour1)-[:NEXT]->(hour2);
